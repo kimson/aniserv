@@ -1,0 +1,78 @@
+<div class="row">
+	<div class="span12">
+		<h1>Dashboard</h1>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="sapn12">
+		<div style="margin: 25px">
+		<h2>ディスク容量</h2>
+		<div class="progress">
+			<div class="bar bar-danger" style="width: <%=@percentage%>%"><%=@percentage%>% / <%=(@total-@available).to_i%>GB</div>
+			<div class="bar bar-info" style="width: <%=(100-@percentage)%>%"><%=@available.to_i%>GB</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+<div class="span5 well">
+	<h2>新着ファイル一覧</h2>
+	<p><%=@count%></p>
+	<table class="table">
+	  <thead>
+	  <tr>
+		<th>title</th>
+		<th>number</th>
+	 </tr>
+	 </thead>
+	 <tbody>
+	<% @movies_file_list.each do |movie| %>
+	  <tr>
+		<td><%= link_to movie.title, "/movies/player/"+(movie.id.to_s) %></td>
+		<td><%= movie.number %></td>
+	  </tr>
+	<% end %>
+	</tbody>
+	</table>
+	<p style="text-align:right">
+	  <strong>
+	    <%= link_to "more >>", {:controller => "movies", :action => "list", :type => "file", :order => "update", :offset => "0"} %>
+	  </strong>
+	</p>
+</div>
+<div class="span6 well">
+	<h2>ランキング( <%= @rank_title %> )</h2>
+	<p>
+	  <a href="/">全期間</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+	  <a href="/?rank_type=cm">今月</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+	  <a href="/?rank_type=lm">先月</a>
+	</p>
+	<table class="table">
+	  <thead>
+	  <tr>
+		<th>title</th>
+		<th>pt</th>
+	 </tr>
+	 </thead>
+	 <tbody>
+	<% @play_ranking.each do |movie| %>
+	  <tr>
+		<td>
+		  <% @user_log[movie.syobocalid].each do |key, val|
+		     rate = ( val.to_f / movie.count.to_f ) * 100 
+		  %>
+               <div style="float:left; height:3px; width:<%=rate.to_i%>%; background-color:<%=@user_color[key]%>"></div>
+		  <% end %>
+		  <%= link_to movie.title, "/movies/player/"+(movie.id.to_s) %>
+		</td>
+		<td><%= movie.count %></td>
+	  </tr>
+	<% end %>
+	</tbody>
+	</table>
+</div>
+<!--<%=@user_log.inspect %>-->
+</div>

@@ -1,0 +1,97 @@
+<div class="row">
+	<div class="span12">
+		<h1>Player</h1>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="span9">
+	表示単位：
+	<%= link_to "タイトル",  {:controller => controller.controller_name, :action => controller.action_name,
+                              :type => "title", :order => "update"} %>
+	｜
+	<%= link_to "ファイル",  {:controller => controller.controller_name, :action => controller.action_name,
+                              :type => "file", :order => "update"} %>
+
+    <br>
+	並び順：新着順　｜　古い順<br>
+	</div>
+	<div class="sapn2">
+		<form action="search" class="form-search">
+			<input type="text" name="searchtxt" id="searchtxt" class="search-query">
+			<button type="submit" class="btn"><i class="icon-search"></i></button>
+		</form>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="span12">
+	  <p style="text-align:right">
+	  <% if @offset.to_i == 0 then %>
+	    &lt;&lt; <strong>1</strong>
+	  <% else %>
+	    <%= link_to "<<", {:controller => controller.controller_name, :action => controller.action_name,
+		                    :type => @listtype, :order => "update", :offset => (@offset.to_i - 1).to_s} %>
+	    <%= link_to " 1 ", {:controller => controller.controller_name, :action => controller.action_name,
+		                    :type => @listtype, :order => "update", :offset => "0"} %>
+		<% if @st_count != 1 then %>
+		  ...
+		<% end %>
+	  <% end %>
+
+      <% (@st_count .. @fn_count).each do |i|
+	       if i == @offset then %>
+		     <strong><%=@offset+1%></strong>
+		<% else %>
+	         <%= link_to (i+1).to_s, {:controller => controller.controller_name, :action => controller.action_name,
+		                         :type => @listtype, :order => "update", :offset => i.to_s} %>
+	    <% end %>
+	  <% end %>
+
+      <% if @offset.to_i == (@count.to_i - 1) then %>
+	    <strong><%=@count%></strong> &gt;&gt;
+	  <% else %>
+	    <% if @fn_count != @count -2 then %>
+		  ...
+		<% end %>
+	    <%= link_to @count.to_s, {:controller => controller.controller_name, :action => controller.action_name,
+		                    :type => @listtype, :order => "update", :offset => (@count.to_i - 1).to_s} %>
+	    <%= link_to ">>", {:controller => controller.controller_name, :action => controller.action_name,
+		                    :type => @listtype, :order => "update", :offset => (@offset.to_i + 1).to_s} %>
+	  <% end %>
+
+	  </p>
+	  <table class="table">
+	    <thead>
+	      <tr>
+		    <th>title</th>
+		    <th>number</th>
+			<th>subtitle</th>
+			<th>updated at</th>
+	     </tr>
+	   </thead>
+	   <tbody>
+	   <% @movies.each do |movie| %>
+	   <tr>
+		 <td><a href="#" class="menu"><%= link_to movie.title, "/movies/player/"+(movie.id.to_s) %></a></td>
+		 <td><%= movie.number %></td>
+		 <td><%=movie.subtitle%></td>
+		 <td><%=movie.updated_at%></td>
+	   </tr>
+	   <% end %>
+	   </tbody>
+	</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready( function(){
+  $("#searchtxt").autocomplete({
+    source: [
+	<%= raw @searchlist %>
+	]
+  })
+});
+</script>

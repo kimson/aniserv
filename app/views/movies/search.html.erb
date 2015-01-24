@@ -1,0 +1,54 @@
+<div class="row">
+	<div class="span12">
+		<h1>Search</h1>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="span9">
+	キーワード：<%= @searchtxt %> <br>
+	</div>
+	<div class="sapn2">
+		<form action="search" class="form-search">
+			<input type="text" name="searchtxt" id="searchtxt" class="search-query">
+			<button type="submit" class="btn"><i class="icon-search"></i></button>
+		</form>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="span12">
+	  <p style="text-align:right">
+	  </p>
+	  <table class="table">
+	    <thead>
+	      <tr>
+		    <th>title</th>
+			<th>updated at</th>
+	     </tr>
+	   </thead>
+	   <tbody>
+	   <% @movies.each do |movie| %>
+	   <tr>
+		 <td><a href="#" class="menu">
+		   <%= link_to movie.title, "/movies/player?syobocalid="+(movie.syobocalid.to_s) %>
+		 </a></td>
+		 <td><%=movie.updated_at%></td>
+	   </tr>
+	   <% end %>
+	   </tbody>
+	</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready( function(){
+  $("#searchtxt").autocomplete({
+    source: [
+	<%= raw @searchlist %>
+	]
+  })
+});
+</script>

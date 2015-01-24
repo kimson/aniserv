@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  subtitle: MyString
+  number: 1
+  special_flag: 1
+  relation_number: 1
+  broadcast_time: 2012-07-24 22:14:36
+  station: MyString
+  filename: MyString
+  syobocalid: MyString
+
+two:
+  title: MyString
+  subtitle: MyString
+  number: 1
+  special_flag: 1
+  relation_number: 1
+  broadcast_time: 2012-07-24 22:14:36
+  station: MyString
+  filename: MyString
+  syobocalid: MyString

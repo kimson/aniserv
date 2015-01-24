@@ -1,0 +1,42 @@
+<h1><%=@title%></h1>
+<div id="container">Loading the player...</div>
+<div>ファイルサイズが大きすぎてFlashがクラッシュするような場合は，ダウンロードするかブラウザ付属のプレイヤーでみてね→<a id="fileurl" href="/MP4/<%=@movie_org.syobocalid%>/<%=@movie_org.filename%>">ここをクリック</a></div>
+<script type="text/javascript">
+jwplayer("container").setup({
+//flashplayer: "/jwplayer/player.swf",
+playlist: [
+<% @movies.each_with_index do |movie, i| %>
+{ title: "<%=movie.number%>", description : "<%=movie.subtitle%>", file: "/MP4/<%=movie.syobocalid%>/<%=movie.filename%>", provider: "http", movieid: "<%=movie.id%>" }
+<% if @movies.size != i then %>
+  <%= "," %>
+<% end %>
+<% if @id == movie.id then
+     @index = i
+   end
+%>
+<% end %>
+],
+"playlist.position": "right",
+"playlist.size": 250,
+height: 540,
+width: 1160,
+repeat : "list",
+provicer: "http",
+skin: "/newtubedark.zip",
+events: {
+	onReady: function() { jwplayer("container").playlistItem(<%=@index%>); },
+	onPlaylistItem: function(data) {
+	  index = data["index"];
+	  playitem = jwplayer("container").getPlaylistItem(index);
+	  filename = playitem["file"];
+	  movieid  = playitem["movieid"];
+	  $("#fileurl").attr("href", filename);
+
+	  $.ajax({
+	    url: "http://aniserv.dip.jp/movies/play_log?movieid="+movieid,
+		type: "GET"
+      });
+	}
+		}
+		});
+</script>
